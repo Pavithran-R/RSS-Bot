@@ -20,6 +20,7 @@ class RssLink(Document):
 
 
 async def add_link(chat_id, title, link, last_update):
+    await RssLink.ensure_indexes()
     document = RssLink(chat_id=chat_id, title=title, link=link, last_update=last_update)
     await document.commit()
 
