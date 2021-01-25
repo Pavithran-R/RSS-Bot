@@ -59,14 +59,15 @@ async def list_cmd(bot, message):
 async def add(bot, message):
     """add command"""
     try:
-        title, link = message.command[1:3]
+        link = message.command[1]
     except IndexError:
-        await message.reply("The format needs to be: /add title http://www.URL.com")
+        await message.reply("The format needs to be: /add http://www.URL.com")
         return
 
     try:
         async with aiohttp.ClientSession() as session:
             rss_data = await get_rss(link, session)
+            title = rss_data.entries[0]['title']
             update = str(rss_data.entries[0]['link'])
     except IndexError:
         await message.reply("The link does not seem to be a RSS feed or is not supported")
@@ -89,14 +90,14 @@ async def add(bot, message):
 async def remove(bot, message):
     """remove command"""
     try:
-        title = message.command[1]
+        link = message.command[1]
     except IndexError:
-        await message.reply("The format needs to be: /remove title")
+        await message.reply("The format needs to be: /remove link")
         return
 
-    removed = await remove_link(chat_id=message.chat.id, title=title)
+    removed = await remove_link(chat_id=message.chat.id, link=link)
     if removed:
-        await message.reply(f'Removed: {title}', quote=True)
+        await message.reply(f'Removed: {link}', quote=True)
     else:
         await message.reply('There is no such rss link found!', quote=True)
 

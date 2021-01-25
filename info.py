@@ -18,7 +18,7 @@ After successfully adding a RSS link, the bot starts fetching the feed every \
 **Commands:**
 /help - Posts this help message" 
 /add - title http://www\.RSS\-URL\.com" 
-/remove - Title removes the RSS link" 
+/remove - remove the RSS link" 
 /list - Lists all the titles and the RSS links from the DB" 
 /test - Inbuilt command that fetches a post from Reddits RSS." 
 """

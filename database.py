@@ -16,7 +16,7 @@ class RssLink(Document):
 
     class Meta:
         collection_name = COLLECTION_NAME
-        indexes = [{'key': ['chat_id', 'title', 'link'], 'unique': True}]
+        indexes = [{'key': ['chat_id', 'link'], 'unique': True}]
 
 
 async def add_link(chat_id, title, link, last_update):
