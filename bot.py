@@ -42,14 +42,14 @@ async def test(bot, message):
 async def list_cmd(bot, message):
     """list command"""
     total = 0
-    async for document in get_all_links():
+    async for document in get_all_links({'chat_id': message.chat.id}):
+        total += 1
         await message.reply(
             f"<b>Title:</b> {document.title}\n"
             f"<b>rss url:</b> {document.link}\n"
             f"<b>Last update:</b> {document.last_update}\n",
             parse_mode='html',
             disable_web_page_preview=True)
-        total += 1
 
     if not total:
         await message.reply('You have not added any rss link.', quote=True)
@@ -81,9 +81,7 @@ async def add(bot, message):
         except Exception as e:
             await message.reply(f"Error: {e}", quote=True)
         else:
-            await message.reply(f"<b>Added</b> - {title}\n\n{update}",
-                                parse_mode="html",
-                                quote=True)
+            await message.reply(f"<b>Added</b> - {title}\n\n{update}", parse_mode="html", quote=True)
 
 
 @bot.on_message(filters.command('remove'))
@@ -103,7 +101,7 @@ async def remove(bot, message):
 
 
 async def check_updates():
-    async with aiohttp.ClientSession as session:
+    async with aiohttp.ClientSession() as session:
         async for document in get_all_links():
             rss_data = await get_rss(document.link, session)
             title = rss_data.entries[0]['title']
